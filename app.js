@@ -2,7 +2,7 @@
 var map = L.map('map').setView([23.534, 90.325], 7); //center, zoom, min-zoom, max-zoom
 var icon = L.Icon.extend({
     options: {
-        iconSize: [20, 20]
+        iconSize: [15,15]
     }
 });
 //Make Icons
@@ -21,7 +21,7 @@ var cusIcon = new icon({iconUrl: 'pin.png'});
 googleStreets = L.tileLayer('http://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}',{
     maxZoom: 20,
     subdomains:['mt0','mt1','mt2','mt3'],
-    attribution: '<img src="https://www.grameenphone.com/sites/default/files/favicon.ico">BI Grameenphone</img>'
+    attribution: 'OBHAI'
 }).addTo(map);
 
 // Google Satelite
@@ -54,8 +54,8 @@ googleStreets = L.tileLayer('http://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}',
 // }).addTo(map);
 
 //adding the marker
-for (var i = 0 ; i < location.length; i++) {
-	L.marker([parseFloat(location[i].latitude),parseFloat(location[i].longitude)], {icon: cusIcon}).addTo(map).bindPopup(location[i].latitude+", "+location[i].longitude);
+for (i in pos.track) {
+	L.marker([parseFloat(pos.track[i].latitude),parseFloat(pos.track[i].longitude)], {icon: cusIcon}).addTo(map).bindPopup(pos.track[i].latitude+", "+pos.track[i].longitude);
 };
 
 
