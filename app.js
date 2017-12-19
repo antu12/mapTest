@@ -54,30 +54,11 @@ googleStreets = L.tileLayer('http://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}',
 // }).addTo(map);
 
 //adding the marker
+var latlng = Array();
 for (i in pos.track) {
-	L.marker([parseFloat(pos.track[i].latitude),parseFloat(pos.track[i].longitude)], {icon: cusIcon}).addTo(map).bindPopup(pos.track[i].latitude+", "+pos.track[i].longitude);
+	point=[parseFloat(pos.track[i].latitude),parseFloat(pos.track[i].longitude)];
+	latlng.push(point);
+	L.marker(point, {icon: cusIcon}).addTo(map).bindPopup(pos.track[i].latitude+", "+pos.track[i].longitude);
 };
-
-
-//Functions to edit each feature
-function popInfo(feature, layer) {
-	// layer.bindPopup("<h3>ID: "+feature.properties.gp_id+"</h3><h3>Area: "+feature.properties.gp_area+"</h3><h4>Region: "+feature.properties.gp_region+"</h4><h4>Circle: "+feature.properties.gp_circle+"</h4>")
-	layer.bindPopup("<h3>ID: "+feature.properties.t_id+"</h3><h3>Area: "+feature.properties.t_name+"</h3>")
-};
-
-function style(feature) {
-	return {
-			weight: 1,
-			// color: "#000",
-			// fillColor: "blue",
-			// fillOpacity: 1
-		}
-	// if(feature.properties.t_id == "polygon2973"){
-	// 	return {
-	// 		fillColor: "red",
-	// 		weight: 2,
-	// 		opacity: 100,
-	// 		color: "green",
-	// 	}
-	// }
-};
+var polyline = L.polyline(latlng, {color: 'blue'}).addTo(map);
+map.fitBounds(polyline.getBounds());
