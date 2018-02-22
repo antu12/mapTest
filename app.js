@@ -2,12 +2,22 @@
 var map = L.map('map').setView([23.534, 90.325], 7); //center, zoom, min-zoom, max-zoom
 var icon = L.Icon.extend({
     options: {
-        iconSize: [15,15]
+        iconSize: [15, 15]
     }
 });
 //Make Icons
-var cusIcon = new icon({iconUrl: 'pin.png'});
-
+var cusIcon = new icon({
+    iconUrl: 'pin.png',
+    // iconSize:     [38, 95],
+});
+var startIcon = new icon({
+    iconUrl: 'start.png',
+    iconSize:     [40, 40],
+});
+var endIcon = new icon({
+    iconUrl: 'end.png',
+    iconSize:     [40, 40],
+});
 
 
 //add a layer of OSM/Google Map to the map variable to make the map 
@@ -18,9 +28,9 @@ var cusIcon = new icon({iconUrl: 'pin.png'});
 // }).addTo(map);
 
 // Google Streets View
-googleStreets = L.tileLayer('http://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}',{
+googleStreets = L.tileLayer('http://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', {
     maxZoom: 20,
-    subdomains:['mt0','mt1','mt2','mt3'],
+    subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
     attribution: 'OBHAI'
 }).addTo(map);
 
@@ -37,7 +47,7 @@ googleStreets = L.tileLayer('http://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}',
 //     subdomains:['mt0','mt1','mt2','mt3'],
 //     attribution: '<img src="https://www.grameenphone.com/sites/default/files/favicon.ico">Grameenphone</img>'
 // }).addTo(map);
- 
+
 // Google Terrain View
 // googleTerrain = L.tileLayer('http://{s}.google.com/vt/lyrs=p&x={x}&y={y}&z={z}',{
 //     maxZoom: 20,
@@ -56,9 +66,27 @@ googleStreets = L.tileLayer('http://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}',
 //adding the marker
 var latlng = Array();
 for (i in pos.track) {
-	point=[parseFloat(pos.track[i].latitude),parseFloat(pos.track[i].longitude)];
-	latlng.push(point);
-	L.marker(point, {icon: cusIcon}).addTo(map).bindPopup(pos.track[i].latitude+", "+pos.track[i].longitude);
+    if (i == 0) {
+        point = [parseFloat(pos.track[i].latitude), parseFloat(pos.track[i].longitude)];
+        latlng.push(point);
+        L.marker(point, {
+            icon: startIcon
+        }).addTo(map).bindPopup(pos.track[i].latitude + ", " + pos.track[i].longitude);
+    } else if (i == (pos.track.length - 1)) {
+        point = [parseFloat(pos.track[i].latitude), parseFloat(pos.track[i].longitude)];
+        latlng.push(point);
+        L.marker(point, {
+            icon: endIcon
+        }).addTo(map).bindPopup(pos.track[i].latitude + ", " + pos.track[i].longitude);
+    } else {
+        point = [parseFloat(pos.track[i].latitude), parseFloat(pos.track[i].longitude)];
+        latlng.push(point);
+        L.marker(point, {
+            icon: cusIcon
+        }).addTo(map).bindPopup(pos.track[i].latitude + ", " + pos.track[i].longitude);
+    }
 };
-var polyline = L.polyline(latlng, {color: 'blue'}).addTo(map);
+var polyline = L.polyline(latlng, {
+    color: 'blue'
+}).addTo(map);
 map.fitBounds(polyline.getBounds());
